@@ -1,0 +1,15 @@
+% Демонстрация книжной вёрстки. Сборка: xelatex main.tex (дважды).
+\documentclass[10pt,twoside,openany]{book}
+\usepackage{fontspec}
+\setmainfont{NimbusRoman-Regular.otf}[BoldFont=NimbusRoman-Bold.otf,ItalicFont=NimbusRoman-Italic.otf,BoldItalicFont=NimbusRoman-BoldItalic.otf]
+\newfontfamily\cyrillicfont{NimbusRoman-Regular.otf}[BoldFont=NimbusRoman-Bold.otf,ItalicFont=NimbusRoman-Italic.otf,BoldItalicFont=NimbusRoman-BoldItalic.otf,Script=Default]
+\usepackage{polyglossia}
+\setdefaultlanguage{russian}
+\usepackage[paperwidth=145mm,paperheight=215mm,inner=14mm,outer=11mm,top=16mm,bottom=15mm,headheight=10pt,headsep=5pt]{geometry}
+\usepackage{trig-chapter}
+\usepackage[unicode,hidelinks]{hyperref}
+\begin{document}
+\setcounter{chapter}{1}
+\setcounter{page}{29}
+\input{trigonometry.tex}
+\end{document}

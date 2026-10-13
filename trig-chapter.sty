@@ -1,0 +1,78 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{trig-chapter}[2026/10/13 Book-matched trigonometry chapter]
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{enumitem}
+\RequirePackage{xparse}
+\RequirePackage{fancyhdr}
+% Стандартные прямые операторы, как в образце Преобразования.pdf.
+\newcommand{\trigsin}{\sin}
+\newcommand{\trigcos}{\cos}
+\newcommand{\trigtg}{\mathop{\mathrm{tg}}\nolimits}
+\newcommand{\trigctg}{\mathop{\mathrm{ctg}}\nolimits}
+\newcommand{\trigarcsin}{\arcsin}
+\newcommand{\trigarccos}{\arccos}
+\newcommand{\trigarctg}{\mathop{\mathrm{arctg}}\nolimits}
+\newcommand{\trigarcctg}{\mathop{\mathrm{arcctg}}\nolimits}
+\newcommand{\TrigNumberPrefix}{2}
+\newcounter{trigexercise}
+\renewcommand{\thetrigexercise}{\TrigNumberPrefix.\arabic{trigexercise}}
+\providecommand{\theHtrigexercise}{trig.\arabic{trigexercise}}
+\newcommand{\TrigRunningTitle}{ТРИГОНОМЕТРИЧЕСКИЕ УРАВНЕНИЯ, СИСТЕМЫ И НЕРАВЕНСТВА\enspace\textbullet\enspace ЗАДАЧИ}
+\fancypagestyle{trigbook}{%
+ \fancyhf{}%
+ \fancyfoot[C]{\fontsize{8}{9}\selectfont\thepage}%
+ \renewcommand{\headrulewidth}{0pt}%
+ \renewcommand{\footrulewidth}{0pt}%
+}
+\newcommand{\TrigChapter}[1]{%
+ \refstepcounter{chapter}%
+ \addcontentsline{toc}{chapter}{\protect\numberline{\thechapter}Тригонометрические уравнения, системы и неравенства}%
+ \thispagestyle{trigbook}%
+ {\centering\bfseries\fontsize{10.5}{11.5}\selectfont
+ \thechapter.\enspace\MakeUppercase{#1}\par}%
+ \vskip8pt
+}
+\newsavebox{\TrigFormulaBox}
+\newsavebox{\TrigTicketBox}
+\newsavebox{\TrigNumberBox}
+\newcommand{\TrigTicket}{\mbox{\fontsize{8.5}{9.5}\selectfont(Билет \TrigCurrentTicket, \TrigCurrentYear)}}
+\newcommand{\TrigMathNoTicket}[1]{%
+ \par\nobreak\vskip1pt
+ \noindent\makebox[\linewidth][c]{$\displaystyle #1$}\par
+ \nobreak\vskip1pt
+}
+\newcommand{\TrigMath}[1]{%
+ \par\nobreak\vskip1pt
+ \sbox{\TrigFormulaBox}{$\displaystyle #1$}%
+ \sbox{\TrigTicketBox}{\TrigTicket}%
+ \ifdim\dimexpr\wd\TrigFormulaBox+2\wd\TrigTicketBox+8pt\relax>\linewidth
+  \noindent\makebox[\linewidth][c]{\usebox{\TrigFormulaBox}}\par\nobreak
+  \vskip1pt\noindent\hfill\TrigTicket\par
+ \else
+  \noindent\makebox[\linewidth][c]{\usebox{\TrigFormulaBox}}%
+  \makebox[0pt][r]{\TrigTicket}\par
+ \fi
+}
+\NewDocumentEnvironment{TrigExercise}{m m m m +b}{%
+ \def\TrigCurrentTicket{#3}\def\TrigCurrentYear{#4}%
+ \setcounter{trigexercise}{\numexpr#1-1\relax}%
+ \refstepcounter{trigexercise}\label{trig:#1}%
+ \sbox{\TrigNumberBox}{\hspace*{3.5mm}\textbf{\thetrigexercise.}\enspace}%
+ \hangindent=\wd\TrigNumberBox\hangafter=1
+ \noindent\usebox{\TrigNumberBox}#2\par\nobreak
+ #5\par
+ \vskip1.5pt plus1fill
+}{}
+% Жёсткие границы исходных страниц; геометрию задаёт главный документ.
+\NewDocumentEnvironment{TrigSourcePage}{m +b}{%
+ \clearpage\begingroup\pagestyle{trigbook}%
+ \setlength{\parindent}{0pt}\setlength{\parskip}{0pt}%
+ \fontsize{10}{11.5}\selectfont
+ \vbox to\textheight{#2\unskip\vskip0pt}%
+ \clearpage\endgroup
+}{}
+\newenvironment{TrigParts}{%
+ \begin{enumerate}[label=\arabic*),leftmargin=1em,labelwidth=.8em,labelsep=.2em,itemindent=0pt,listparindent=0pt,align=left,nosep,topsep=0pt]%
+}{\end{enumerate}}
+\endinput
