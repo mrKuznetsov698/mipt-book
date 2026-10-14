@@ -1,45 +1,45 @@
-# Тригонометрические уравнения, системы и неравенства
+# Trigonometric Equations, Systems, and Inequalities
 
-Редактируемая LaTeX-транскрипция всех 244 заданий с 19 фотографий страниц
-29–47. Вёрстка повторяет структуру печатной книги: те же границы страниц,
-компактный двухстрочный заголовок главы, номер страницы снизу без верхнего колонтитула,
-зеркальные поля, полужирные номера, обозначения функций в стиле образца Преобразования.pdf и билеты
-справа от формул. Фотографии не вставлены вместо текста.
+An editable LaTeX transcription of all 244 problems from 19 photographs of pages
+29–47. The layout replicates the structure of the printed book: identical page boundaries,
+a compact two-line chapter heading, bottom page numbers with no running header,
+mirrored margins, bold problem numbers, function notation matching the `Преобразования.pdf` reference sample, and exam ticket labels
+to the right of the formulas. No photographs are embedded in place of text.
 
-## Размер и шрифты
+## Page Size and Fonts
 
-В демонстрационной сборке установлен книжный формат 145 × 215 мм.
-Это близкое приближение, а не подтверждённый замером размер экземпляра.
-По ссылке пользователя установлены название и ISBN издания:
-«Методическое пособие по математике для старшеклассников и абитуриентов»,
-6-е издание, 2018, ISBN 978-5-89155-295-1.
-Библиографическое описание Рязанской областной библиотеки указывает
-высоту 22 см, но не ширину. Размер обложки и обрезанной страницы может
-отличаться. Фотографии без масштаба не позволяют установить точные миллиметры.
+The demo build uses a book format of 145 × 215 mm.
+This is a close approximation rather than a physically measured size of a printed copy.
+Based on the user's link, the title and ISBN of the publication were identified:
+*"Методическое пособие по математике для старшеклассников и абитуриентов"* (*Study Guide in Mathematics for High School Students and University Applicants*),
+6th edition, 2018, ISBN 978-5-89155-295-1.
+The bibliographic record from the Ryazan Regional Library lists a
+height of 22 cm, but no width. The cover size and trimmed page size may
+differ. Unscaled photographs do not allow determining exact dimensions in millimeters.
 
-Источники размера и идентификации:
+Sources for size and identification:
 - https://urss.ru/cgi-bin/db.pl?blang=ru&id=237712&lang=Ru&page=Book
 - https://kraeved.rounb.ru/uploads/new/2020/new022020.pdf
 
-Основной шрифт — Nimbus Roman, метрически близкий Times; математический —
-Computer Modern, как в образце Преобразования.pdf. Это подбор по внешнему виду: точные названия шрифтов
-исходной книги по фотографиям не установлены. Обозначения sin, cos, tg, ctg
-и обратных функций прямые; переменные курсивные. Кегль текста 10 pt, интерлиньяж 11.5 pt.
+The main text font is Nimbus Roman, metrically close to Times; the math font is
+Computer Modern, matching the `Преобразования.pdf` reference sample. This is a visual match: the exact font names
+used in the original book cannot be determined from photographs. The notations sin, cos, tg, ctg,
+and inverse functions are set upright; variables are italicized. The font size is 10 pt with 11.5 pt leading.
 
-## Файлы
+## Files
 
-- `trigonometry.tex` — подключаемая глава, без преамбулы и document.
-- `trig-chapter.sty` — оформление, нумерация страниц и математические операторы.
-- `main.tex` — пример сборки с размером страницы и шрифтами.
-- `trigonometry.pdf` — 19 страниц примера, пронумерованных 29–47.
-- `Makefile` — сборка и проверка.
-- `check_layout.py` — проверка границ страниц, номеров задач и положения всех билетов.
+- `trigonometry.tex` — includable chapter file, without preamble or `\begin{document}`.
+- `trig-chapter.sty` — styling, page numbering, and mathematical operators.
+- `main.tex` — sample build file configuring page dimensions and fonts.
+- `trigonometry.pdf` — 19 sample pages, numbered 29–47.
+- `Makefile` — build and verification rules.
+- `check_layout.py` — script to verify page boundaries, problem numbers, and the placement of all exam ticket labels.
 
-## Подключение к общей книге с таким же оформлением
+## Including in a Master Book with Matching Styling
 
-Положите `trig-chapter.sty` рядом с главным файлом книги,
-а `trigonometry.tex` — например, в `chapters/`.
-Используйте преамбулу из `main.tex`. В ней важны настройки:
+Place `trig-chapter.sty` next to the master book file,
+and `trigonometry.tex` in a subdirectory such as `chapters/`.
+Use the preamble from `main.tex`. The following settings are essential:
 
 ```latex
 \documentclass[10pt,twoside,openany]{book}
@@ -62,77 +62,80 @@ Computer Modern, как в образце Преобразования.pdf. Эт
 \usepackage{trig-chapter}
 ```
 
-В тексте:
+In the document body:
 
 ```latex
 \input{chapters/trigonometry.tex}
 ```
 
-Сам файл главы не выбирает шрифты, геометрию, язык или движок и не меняет
-счётчик страниц. Для совпадения оформления используйте параметры примера.
-Внутри файла сохранены принудительные разрывы по исходным страницам:
-смена размера/кегля общей книги может потребовать подгонки.
+The chapter file itself does not set fonts, geometry, language, or TeX engine, nor does it modify
+the page counter. To match the intended layout, use the parameters from the sample file.
+Hard page breaks matching the original pages are preserved inside the file:
+changing the page dimensions or font size of the master book may require manual adjustment.
 
-Главу нумерует общий счётчик `chapter`; вместо стандартного большого
-заголовка используется `\TrigChapter`, который также добавляет главу
-в оглавление. Номера задач по умолчанию сохранены как 2.1–2.244.
-Для их привязки к текущему номеру главы:
+The chapter is numbered using the standard `chapter` counter; instead of the default large
+heading, it uses `\TrigChapter`, which also adds the chapter entry
+to the table of contents. By default, problem numbers are hardcoded as 2.1–2.244.
+To bind them dynamically to the current chapter number:
 
 ```latex
 \renewcommand{\TrigNumberPrefix}{\thechapter}
+
 ```
 
-Ссылки: `\ref{trig:17}`, `\ref{trig:244}`, `\ref{chap:trigonometry}`.
-Все команды обозначений функций имеют префикс `trig`; глобальные
-`\sin`, `\cos` и прочие команды общей книги не переопределяются.
+Cross-references: `\ref{trig:17}`, `\ref{trig:244}`, `\ref{chap:trigonometry}`.
+All trigonometric function commands are prefixed with `trig`; global macros
+such as `\sin`, `\cos`, and others in the master book are not overridden.
 
-## Сборка
+## Building
 
-Из каталога исходников:
+From the source directory:
 
 ```sh
 make
 make check
+
 ```
 
-Для проверки нужен Python 3 с PyMuPDF (`python3-pymupdf` в Debian).
-Проверка контролирует все 244 билета, в том числе их положение у формулы,
-когда после неё есть текст, и выравнивание переноса в 2.37–2.40.
-После сборки также нужно визуально просмотреть страницы PDF.
+Verification requires Python 3 with PyMuPDF (`python3-pymupdf` in Debian).
+The check validates all 244 exam ticket labels, including their alignment next to the formula
+when followed by additional text, as well as line-break alignment in problems 2.37–2.40.
+After building, the PDF pages should also be inspected visually.
 
-Команды сборки вручную:
+Manual build commands:
 
 ```sh
 xelatex -interaction=nonstopmode -halt-on-error main.tex
 xelatex -interaction=nonstopmode -halt-on-error main.tex
+
 ```
 
-Результат — `main.pdf`. Нужны XeLaTeX, OpenType-шрифты Nimbus Roman
-(обычно пакет fonts-urw-base35) и пакеты из преамбулы. LuaLaTeX также
-возможен при полном установленном окружении, но проверена сборка XeLaTeX.
+The output is `main.pdf`. Requires XeLaTeX, Nimbus Roman OpenType fonts
+(typically provided by the `fonts-urw-base35` package), and the packages listed in the preamble. LuaLaTeX is also
+compatible with a full TeX installation, though verification was performed with XeLaTeX.
 
-Счётчики в `main.tex` выставлены только для демонстрации главы 2 со страницы
-29. В общей книге удалите эти две установки: нумерация продолжится сама.
+The counters in `main.tex` are set strictly to demonstrate Chapter 2 starting on page
+29. Remove those two counter assignments in the master book so numbering continues automatically.
 
-## Сохранённые несогласованности оригинала
+## Preserved Inconsistencies from the Original
 
-- В 2.229–2.232 сказано «Решить неравенство», но напечатан знак `=`.
-- У задачи 2.203 указан «Билет 10, 2009», как и у 2.202.
-- В 2010 году некоторые уравнения и системы имеют одинаковые номера билетов.
+* Problems 2.229–2.232 state "Решить неравенство" ("Solve the inequality"), but are printed with an `=` sign.
+* Problem 2.203 is labeled "Билет 10, 2009" ("Ticket 10, 2009"), duplicating the label of 2.202.
+* Several equations and systems from 2010 share identical ticket numbers.
 
-Математические условия не исправлялись по догадке. При изменении оформления
-автоматически проверено совпадение всех 244 формул с предыдущей транскрипцией.
-Проверены 19 диапазонов номеров задач по исходным страницам и отсутствие
-выходящих за поля формул. Точное факсимильное совпадение шрифтов и координат
-по наклонённым фотографиям не гарантируется; это восстановленная LaTeX-вёрстка.
+Mathematical problem statements were not altered by guesswork. During layout adjustments,
+all 244 formulas were automatically verified against the initial transcription to ensure zero drift.
+All 19 problem number ranges were checked against the original pages, and no formulas
+overflow the margins. An exact facsimile match of fonts and coordinates
+cannot be guaranteed from angled photographs; this is a reconstructed LaTeX typesetting.
 
-## Оформление подписей и длинных условий
+## Formatting of Ticket Labels and Long Problem Statements
 
-Все билеты привязаны к формуле, в том числе в заданиях, где после формулы
-есть дополнительные условия или пункты. Текст после формулы располагается
-отдельно от подписи. Длинные уравнения 2.194 и 2.196 разбиты на две строки,
-чтобы билет помещался справа от математического блока.
+All exam ticket labels are anchored to their respective formulas, including in problems where the formula
+is followed by additional conditions or sub-items. Any text following a formula is placed
+separately from the ticket label. Long equations in 2.194 and 2.196 are split across two lines
+so the ticket label fits to the right of the math block.
 
-В 2.37–2.40 перенос сделан между смысловыми частями условия, без разрыва
-слова «выполняется». Строки продолжения выровнены по началу текста после номера.
-Верхнего колонтитула нет, номера страниц расположены снизу.
+In 2.37–2.40, line breaks are placed between logical clauses of the problem statement, avoiding hyphenation
+of the word "выполняется". Continuation lines are aligned with the start of the text following the problem number.
+There is no running header; page numbers are centered at the bottom.
