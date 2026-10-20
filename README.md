@@ -1,87 +1,96 @@
 # Trigonometric Equations, Systems, and Inequalities
 
 An editable LaTeX transcription of all 244 problems from 19 photographs of pages
-29–47. The layout replicates the structure of the printed book: identical page boundaries,
-a compact two-line chapter heading, bottom page numbers with no running header,
-mirrored margins, bold problem numbers, function notation matching the `Преобразования.pdf` reference sample, and exam ticket labels
-to the right of the formulas. No photographs are embedded in place of text.
+29–47. The demo uses the shared [Fi_tex preamble](https://github.com/sstellariaa/Fi_tex):
+landscape A4 with two columns. Problem numbers, formulas, and exam ticket labels
+are preserved as editable text; no photographs are embedded in their place.
 
-## Page Size and Fonts
+## Page Size, Fonts, and Languages
 
-The demo build uses a book format of 145 × 215 mm.
-This is a close approximation rather than a physically measured size of a printed copy.
-Based on the user's link, the title and ISBN of the publication were identified:
-*"Методическое пособие по математике для старшеклассников и абитуриентов"* (*Study Guide in Mathematics for High School Students and University Applicants*),
-6th edition, 2018, ISBN 978-5-89155-295-1.
-The bibliographic record from the Ryazan Regional Library lists a
-height of 22 cm, but no width. The cover size and trimmed page size may
-differ. Unscaled photographs do not allow determining exact dimensions in millimeters.
+The demo uses landscape A4 (297 × 210 mm), with 1 cm side margins and 1.5 cm
+top/bottom margins. Two columns are separated by a 2 cm gap and a 0.4 pt rule.
+Text is 10 pt with 12 pt leading so consecutive lines and formulas remain legible.
+The original template's unsupported `14pt` option for `article` is replaced by
+an explicit `10pt` setting; the sample's 8 pt leading is not used.
 
-Sources for size and identification:
+Fonts and localization are configured together in `preamble.tex`:
+
+```latex
+\usepackage{amsmath,amsthm}
+\usepackage[regular]{newcomputermodern}
+\usepackage{polyglossia}
+\setmainlanguage{russian}
+\setotherlanguage{english}
+```
+
+New Computer Modern provides Cyrillic text and Unicode math. Trigonometric
+operators are upright; variables are italic. There is no Babel/fontenc/inputenc
+configuration and no `amssymb` dependency. Install Russian hyphenation patterns
+as part of the TeX distribution; both Russian and English are available.
+
+The shared preamble also includes `\fr`, `\pd`, `\limm`, `\vect`, the
+`Proof` environment, and the `Ex`, `Th`, `Def`, and `Ax` theorem environments
+from Fi_tex. Placeholder body text from that repository is not included.
+
+The source book is *Методическое пособие по математике для старшеклассников и
+абитуриентов*, 6th edition, 2018, ISBN 978-5-89155-295-1. Its original page
+numbers remain as source markers in `trigonometry.tex`; they do not force page
+breaks in the two-column build.
+
+Sources for the original publication:
 - https://urss.ru/cgi-bin/db.pl?blang=ru&id=237712&lang=Ru&page=Book
 - https://kraeved.rounb.ru/uploads/new/2020/new022020.pdf
-
-The main text font is Nimbus Roman, metrically close to Times; the math font is
-Computer Modern, matching the `Преобразования.pdf` reference sample. This is a visual match: the exact font names
-used in the original book cannot be determined from photographs. The notations sin, cos, tg, ctg,
-and inverse functions are set upright; variables are italicized. The font size is 10 pt with 11.5 pt leading.
 
 ## Files
 
 - `trigonometry.tex` — includable chapter file, without preamble or `\begin{document}`.
 - `trig-chapter.sty` — styling, page numbering, and mathematical operators.
-- `main.tex` — sample build file configuring page dimensions and fonts.
-- `trigonometry.pdf` — 19 sample pages, numbered 29–47.
+- `main.tex` — sample article that loads the preamble and starts two columns.
+- `preamble.tex` — Fi_tex layout and commands, with New Computer Modern and Polyglossia.
+- `trigonometry.pdf` — compiled chapter in the current two-column layout.
 - `Makefile` — build and verification rules.
 - `check_layout.py` — script to verify page boundaries, problem numbers, and the placement of all exam ticket labels.
 
-## Including in a Master Book with Matching Styling
+## Including in a Master Document
 
-Place `trig-chapter.sty` next to the master book file,
-and `trigonometry.tex` in a subdirectory such as `chapters/`.
-Use the preamble from `main.tex`. The following settings are essential:
-
-```latex
-\documentclass[10pt,twoside,openany]{book}
-\usepackage{fontspec}
-\setmainfont{NimbusRoman-Regular.otf}[
-  BoldFont=NimbusRoman-Bold.otf,
-  ItalicFont=NimbusRoman-Italic.otf,
-  BoldItalicFont=NimbusRoman-BoldItalic.otf]
-\newfontfamily\cyrillicfont{NimbusRoman-Regular.otf}[
-  BoldFont=NimbusRoman-Bold.otf,
-  ItalicFont=NimbusRoman-Italic.otf,
-  BoldItalicFont=NimbusRoman-BoldItalic.otf,
-  Script=Default]
-\usepackage{polyglossia}
-\setdefaultlanguage{russian}
-\usepackage[
-  paperwidth=145mm,paperheight=215mm,
-  inner=14mm,outer=11mm,top=16mm,bottom=15mm,
-  headheight=10pt,headsep=5pt]{geometry}
-\usepackage{trig-chapter}
-```
-
-In the document body:
+Place `preamble.tex` and `trig-chapter.sty` next to the main file,
+and `trigonometry.tex` in the same directory or a subdirectory such as `chapters/`.
 
 ```latex
+\documentclass[10pt,a4paper,landscape]{article}
+\input{preamble.tex}
+\usepackage[continuous]{trig-chapter}
+\usepackage[unicode,hidelinks]{hyperref}
+\pdfstringdefDisableCommands{\def\\{ }}
+
+\begin{document}
+\pagestyle{trigbook}
+\fontsize{10}{12}\selectfont
+\setcounter{section}{1}
+\begin{multicols}{2}
 \input{chapters/trigonometry.tex}
+\end{multicols}
+\end{document}
 ```
 
-The chapter file itself does not set fonts, geometry, language, or TeX engine, nor does it modify
-the page counter. To match the intended layout, use the parameters from the sample file.
-Hard page breaks matching the original pages are preserved inside the file:
-changing the page dimensions or font size of the master book may require manual adjustment.
+The `continuous` option removes the old source-page breaks and keeps each
+problem together when a column fills. Page numbers are centered at the bottom;
+there is no running header. The chapter file does not select fonts or languages.
 
-The chapter is numbered using the standard `chapter` counter; instead of the default large
-heading, it uses `\TrigChapter`, which also adds the chapter entry
-to the table of contents. By default, problem numbers are hardcoded as 2.1–2.244.
-To bind them dynamically to the current chapter number:
+`\TrigChapter` uses the `section` counter in `article` and the `chapter`
+counter in `book`. It also adds an entry to the table of contents. The counter
+assignment in the example makes the heading number 2. Problem numbers remain
+2.1–2.244 by default. To bind them to the current heading number:
 
 ```latex
-\renewcommand{\TrigNumberPrefix}{\thechapter}
-
+\renewcommand{\TrigNumberPrefix}{\thesection} % article
+% \renewcommand{\TrigNumberPrefix}{\thechapter} % book
 ```
+
+Without the `continuous` option, the package retains the original fixed
+page boundaries for a single-column book. Its geometry must be configured
+separately (the previous demo used approximately 145 × 215 mm). Do not use
+that mode inside `multicols`.
 
 Cross-references: `\ref{trig:17}`, `\ref{trig:244}`, `\ref{chap:trigonometry}`.
 All trigonometric function commands are prefixed with `trig`; global macros
@@ -110,12 +119,12 @@ xelatex -interaction=nonstopmode -halt-on-error main.tex
 
 ```
 
-The output is `main.pdf`. Requires XeLaTeX, Nimbus Roman OpenType fonts
-(typically provided by the `fonts-urw-base35` package), and the packages listed in the preamble. LuaLaTeX is also
-compatible with a full TeX installation, though verification was performed with XeLaTeX.
-
-The counters in `main.tex` are set strictly to demonstrate Chapter 2 starting on page
-29. Remove those two counter assignments in the master book so numbering continues automatically.
+The generated files are `main.pdf` and, after `make`, `trigonometry.pdf`.
+Use XeLaTeX with New Computer Modern, fontsetup, Polyglossia, Russian hyphenation
+patterns, and the other packages in `preamble.tex`. For TeX Live, the relevant
+packages include `newcomputermodern`, `fontsetup`, `polyglossia`, and
+`hyphen-russian`; a complete installation already includes them.
+The document is Unicode and should not be compiled with pdfLaTeX.
 
 ## Preserved Inconsistencies from the Original
 
@@ -125,8 +134,8 @@ The counters in `main.tex` are set strictly to demonstrate Chapter 2 starting on
 
 Mathematical problem statements were not altered by guesswork. During layout adjustments,
 all 244 formulas were automatically verified against the initial transcription to ensure zero drift.
-All 19 problem number ranges were checked against the original pages, and no formulas
-overflow the margins. An exact facsimile match of fonts and coordinates
+The source-page markers and all 244 problem numbers are retained. The layout check
+verifies reading order across columns, all ticket labels, and language/layout warnings. An exact facsimile match of fonts and coordinates
 cannot be guaranteed from angled photographs; this is a reconstructed LaTeX typesetting.
 
 ## Formatting of Ticket Labels and Long Problem Statements

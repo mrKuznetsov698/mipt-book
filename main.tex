@@ -1,15 +1,15 @@
-% Демонстрация книжной вёрстки. Сборка: xelatex main.tex (дважды).
-\documentclass[10pt,twoside,openany]{book}
-\usepackage{fontspec}
-\setmainfont{NimbusRoman-Regular.otf}[BoldFont=NimbusRoman-Bold.otf,ItalicFont=NimbusRoman-Italic.otf,BoldItalicFont=NimbusRoman-BoldItalic.otf]
-\newfontfamily\cyrillicfont{NimbusRoman-Regular.otf}[BoldFont=NimbusRoman-Bold.otf,ItalicFont=NimbusRoman-Italic.otf,BoldItalicFont=NimbusRoman-BoldItalic.otf,Script=Default]
-\usepackage{polyglossia}
-\setdefaultlanguage{russian}
-\usepackage[paperwidth=145mm,paperheight=215mm,inner=14mm,outer=11mm,top=16mm,bottom=15mm,headheight=10pt,headsep=5pt]{geometry}
-\usepackage{trig-chapter}
+% !TeX program = xelatex
+% Формат Fi_tex: альбомный A4, две колонки, Unicode-шрифты и русский язык.
+\documentclass[10pt,a4paper,landscape]{article}
+\input{preamble.tex}
+\usepackage[continuous]{trig-chapter}
 \usepackage[unicode,hidelinks]{hyperref}
+\pdfstringdefDisableCommands{\def\\{ }}
 \begin{document}
-\setcounter{chapter}{1}
-\setcounter{page}{29}
+\pagestyle{trigbook}
+\fontsize{10}{12}\selectfont
+\setcounter{section}{1}
+\begin{multicols}{2}
 \input{trigonometry.tex}
+\end{multicols}
 \end{document}
